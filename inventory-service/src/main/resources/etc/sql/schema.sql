@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS products (
+  id UUID NOT NULL,
+   name VARCHAR NOT NULL,
+   price DECIMAL NOT NULL,
+   quantity INTEGER,
+   sale DECIMAL,
+   CONSTRAINT pk_products PRIMARY KEY (id),
+   CONSTRAINT UC_PRODUCTS_NAME UNIQUE (name)
+);

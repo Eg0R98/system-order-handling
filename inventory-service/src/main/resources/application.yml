@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/inventory_service_db
+    password: root
+    username: root
+    driver-class-name: org.postgresql.Driver
+  output:
+    ansi:
+      enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:etc/sql/schema.sql
+#      data-locations: classpath:etc/sql/data.sql
+server:
+  port: 8087
+grpc:
+  server:
+    port: 9090
+    security:
+      enabled: false
+    name: inventory-service
+

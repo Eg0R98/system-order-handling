@@ -1,0 +1,65 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/order_service_db
+    password: root
+    username: root
+    driver-class-name: org.postgresql.Driver
+  output:
+    ansi:
+      enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:etc/sql/schema.sql
+#      data-locations: classpath:etc/sql/data.sql
+  kafka:
+    producer:
+      bootstrap-servers: "127.0.0.1:9092"
+      properties:
+        #        retry:
+        #          backoff:
+        #            ms: 1000
+        delivery:
+          timeout:
+            ms: 10000
+          linger:
+            ms: 5000
+        request:
+          timeout:
+            ms: 5000
+        max:
+          in:
+            flight:
+              requests:
+                per:
+                  connection: 5
+        security.protocol: PLAINTEXT
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+    #      retries: 10
+  logging:
+    level:
+      org:
+        apache:
+          kafka: INFO
+        springframework:
+          kafka: INFO
+token:
+  signing:
+    key: PVU+sMExaAa9l8uddkUPpDT+EvcZA/hlasmXRUT9ChM=
+app:
+  admin:
+    username: admin
+    email: admin@gmail.com
+    password: admin123
+grpc:
+  client:
+    inventory-service:
+      address: "localhost:9090"
+      negotiationType: plaintext

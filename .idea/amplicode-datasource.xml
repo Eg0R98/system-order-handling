@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AmplicodeJpaDataSourceConfig">
+    <data-sources>
+      <data-source id="0214169c-10d0-4f0d-8a98-132e01767be9" name="system-order-handling" url="jdbc:postgresql://127.0.0.1:5432/order_service_db" driverClass="org.postgresql.Driver" />
+      <data-source id="402e9d8b-e907-49d0-b9b7-7b6ee053d4ce" name="inventory_service_db" url="jdbc:postgresql://127.0.0.1:5432/inventory_service_db" driverClass="org.postgresql.Driver" />
+      <data-source id="e2d075d5-ae87-4103-9b86-53e082508ef2" name="notification_service_db" url="jdbc:postgresql://127.0.0.1:5432/notification_service_db" driverClass="org.postgresql.Driver" />
+    </data-sources>
+  </component>
+</project>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AmplicodeDatabaseMigrationSettings" lastIdType="UUID" lastGeneratedStrategy="NONE" />
+  <component name="AmplicodePersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="InventoryService.main" name="Default">
+        <packages>
+          <package value="com.inventoryservice.InventoryService" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="NotificationService.main" name="Default">
+        <packages>
+          <package value="com.notificationservice.NotificationService" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="OrderService.main" name="Default">
+        <packages>
+          <package value="com.orderservice.OrderService" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>
