@@ -1,0 +1,31 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/notification_service_db
+    password: root
+    username: root
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    consumer:
+      bootstrap-servers: "127.0.0.1:9092"
+      group-id: "order-events"
+  output:
+    ansi:
+      enabled: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:etc/sql/schema.sql
+  #      data-locations: classpath:etc/sql/data.sql
+logging:
+  level:
+    org:
+      apache:
+        kafka: INFO
+      springframework:
+        kafka: INFO
+

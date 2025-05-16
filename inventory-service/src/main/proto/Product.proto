@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package inventory;
+
+message ProductDTOFromOrderService{
+    string productId = 1;
+    int32 quantity = 2;
+}
+
+message SuccessfulProductDTOFromInventoryService{
+    string productId = 1;
+    string name = 2;
+    string discountedPrice = 3;
+    string totalValueWithDiscount = 4;
+    int32 quantity = 5;
+    string sale = 6;
+}
+
+message UnsuccessfulProductDTOFromInventoryService{
+    string productId = 1;
+    int32 quantity = 2;
+}
+
+
+message ProductsRequest {
+    repeated ProductDTOFromOrderService products = 1;
+}
+
+message ProductsResponse {
+    repeated SuccessfulProductDTOFromInventoryService successfulProducts = 1;
+    repeated UnsuccessfulProductDTOFromInventoryService unsuccessfulProducts = 2;
+}
+
+service InventoryService {
+    rpc checkAvailability (ProductsRequest) returns (ProductsResponse);
+}
+
+
