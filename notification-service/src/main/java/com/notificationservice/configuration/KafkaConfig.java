@@ -22,16 +22,31 @@ import org.springframework.util.backoff.FixedBackOff;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Настройка кафки
+ */
 @Configuration
 public class KafkaConfig {
 
+    /**
+     * Адреса Kafka брокеров, задаются из application.properties
+     */
     @Value("${spring.kafka.consumer.bootstrap-servers}")
     private String bootstrapServers;
 
+    /**
+     * ID группы потребителей Kafka, задаётся из конфигурации
+     */
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
-
+    /**
+     * Создаёт фабрику потребителей Kafka с нужными настройками.
+     * Включает десериализацию ключей и значений сообщений,
+     * а также обработку ошибок при десериализации.
+     *
+     * @return ConsumerFactory для создания потребителей Kafka
+     */
     @Bean
     ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
@@ -47,6 +62,14 @@ public class KafkaConfig {
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
+    /**
+     * Создаёт фабрику контейнеров слушателей Kafka,
+     * настраивает обработчик ошибок с повторными попытками и Dead Letter Queue (DLQ).
+     *
+     * @param consumerFactory фабрика потребителей Kafka
+     * @param kafkaTemplate  шаблон для отправки сообщений в Kafka (для DLQ)
+     * @return фабрика контейнеров слушателей Kafka
+     */
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
             ConsumerFactory<String, Object> consumerFactory, KafkaTemplate kafkaTemplate) {
@@ -62,11 +85,22 @@ public class KafkaConfig {
         return factory;
     }
 
+    /**
+     * Создаёт KafkaTemplate для отправки сообщений в Kafka
+     *
+     * @param producerFactory фабрика продюсеров Kafka
+     * @return KafkaTemplate для отправки сообщений
+     */
     @Bean
     KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 
+    /**
+     * Создаёт фабрику продюсеров Kafka с настройками сериализации ключей и значений сообщений.
+     *
+     * @return ProducerFactory для создания продюсеров Kafka
+     */
     @Bean
     ProducerFactory<String, Object> producerFactory() {
         Map<String, Object> config = new HashMap<>();

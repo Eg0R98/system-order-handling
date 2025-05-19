@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * ДТО, обладающее необходимыми для регистрации данными
+ */
 @Data
 @Schema(description = "Запрос на регистрацию")
 public class RegRequest {

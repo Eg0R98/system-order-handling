@@ -11,23 +11,46 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Сущность заказа (Order).
+ * Представляет заказ пользователя, содержит идентификатор пользователя и список товаров.
+ */
 @Entity
 @Table(name = "orders")
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class Order {
+
+    /**
+     * Уникальный идентификатор заказа.
+     */
     @Id
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    /**
+     * Идентификатор пользователя, сделавшего заказ.
+     * Поле уникально — у пользователя может быть только один заказ в данной таблице.
+     */
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
+    /**
+     * Список товаров, входящих в заказ.
+     * Связь один-ко-многим с сущностью Product.
+     */
     @OneToMany(mappedBy = "order")
     @NotNull
     List<Product> products;
 
+    /**
+     * Переопределённый метод equals для сравнения сущностей по идентификатору.
+     * Сравнивает объекты с учётом Hibernate Proxy для корректной работы с ленивой загрузкой.
+     *
+     * @param o объект для сравнения
+     * @return true, если объекты равны по идентификатору, иначе false
+     */
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -39,11 +62,23 @@ public class Order {
         return getId() != null && Objects.equals(getId(), order.getId());
     }
 
+    /**
+     * Переопределённый метод hashCode, совместимый с equals.
+     * Возвращает хэш-код на основе класса сущности, учитывая Hibernate Proxy.
+     *
+     * @return хэш-код объекта
+     */
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 
+    /**
+     * Переопределённый метод toString для удобного вывода информации об объекте.
+     * Включает основные поля, полезен для логирования и отладки.
+     *
+     * @return строковое представление объекта
+     */
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +

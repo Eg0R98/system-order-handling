@@ -8,6 +8,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Создание админа на старте приложения, если его не существует
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -17,6 +20,10 @@ public class AdminInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final AdminProperties adminProperties;
 
+    /**
+     * Поиск админа в бд.
+     * Если не найден, создается новый
+     */
     @Override
     public void run(String... args) {
         if (userRepository.findByUsername(adminProperties.getUsername()).isEmpty()) {

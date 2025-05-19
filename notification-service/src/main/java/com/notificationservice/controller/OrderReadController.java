@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * REST-контроллер для получения информации о заказах.
+ */
 @RestController
 @RequestMapping("/api/orders/")
 @RequiredArgsConstructor
@@ -22,6 +25,11 @@ public class OrderReadController {
 
     private final OrderService service;
 
+    /**
+     * Получение списка всех заказов.
+     *
+     * @return HTTP-ответ с перечнем всех заказов и статусом 200 OK
+     */
     @Operation(summary = "Получить все заказы")
     @GetMapping
     public ResponseEntity<List<Order>> getAll() {
@@ -30,16 +38,28 @@ public class OrderReadController {
         return ResponseEntity.ok(orders);
     }
 
+    /**
+     * Получение заказа по его уникальному идентификатору.
+     *
+     * @param orderId UUID заказа
+     * @return HTTP-ответ с заказом и статусом 200 OK
+     */
     @Operation(summary = "Получить заказ по его id")
-    @GetMapping("/{orderId}")
+    @GetMapping("/order/{orderId}")
     public ResponseEntity<Order> getByOrderId(@PathVariable UUID orderId) {
         Order order = service.findByOrderId(orderId);
 
         return ResponseEntity.ok(order);
     }
 
+    /**
+     * Получение списка заказов по id пользователя.
+     *
+     * @param userId пользователя
+     * @return HTTP-ответ со списком заказов пользователя и статусом 200 OK
+     */
     @Operation(summary = "Получить заказы по id пользователя")
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<Order>> getByUserId(@PathVariable Long userId) {
         List<Order> orders = service.findByUserId(userId);
 

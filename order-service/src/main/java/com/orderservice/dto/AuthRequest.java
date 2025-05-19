@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * ДТО, обладающее необходимыми для авторизации данными
+ */
 @Data
-@Schema(description = "Запрос на аутентификацию")
+@Schema(description = "Запрос на авторизацию")
 public class AuthRequest {
 
     @Schema(description = "Имя пользователя", example = "Jon")

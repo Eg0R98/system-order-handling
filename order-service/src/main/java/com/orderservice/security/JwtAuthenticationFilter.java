@@ -20,6 +20,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Класс проверяет наличие и валидность токена
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -28,6 +31,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService userService;
 
+    /**
+     *
+     * Извлечение и проверка токена
+     * @param request содержит данные о входящем запросе
+     * @param response хранит в себе ответ сервера
+     * @param filterChain передает запрос по цепочке фильтров
+     *
+     */
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,

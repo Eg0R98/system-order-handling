@@ -2,36 +2,42 @@ syntax = "proto3";
 
 package inventory;
 
-message ProductDTOFromOrderService{
-    string productId = 1;
-    int32 quantity = 2;
+// DTO для передачи информации о товаре из сервиса заказов в инвентарь
+message ProductDTOFromOrderService {
+    string productId = 1; // Идентификатор товара
+    int32 quantity = 2;   // Запрошенное количество
 }
 
-message SuccessfulProductDTOFromInventoryService{
-    string productId = 1;
-    string name = 2;
-    string discountedPrice = 3;
-    string totalValueWithDiscount = 4;
-    int32 quantity = 5;
-    string sale = 6;
+// DTO для успешной проверки наличия товара со стороны inventory-service
+message SuccessfulProductDTOFromInventoryService {
+    string productId = 1;               // Идентификатор товара
+    string name = 2;                    // Название товара
+    string discountedPrice = 3;        // Цена со скидкой
+    string totalValueWithDiscount = 4; // Общая стоимость с учетом количества и скидки
+    int32 quantity = 5;                // Доступное количество
+    string sale = 6;                   // Скидка
 }
 
-message UnsuccessfulProductDTOFromInventoryService{
-    string productId = 1;
-    int32 quantity = 2;
+// DTO для товаров, которые не прошли проверку (недоступны или недостаточно количества)
+message UnsuccessfulProductDTOFromInventoryService {
+    string productId = 1; // Идентификатор товара
+    int32 quantity = 2;   // Запрошенное количество (недоступное)
 }
 
-
+// Запрос от сервиса заказов в инвентарь на проверку наличия товаров
 message ProductsRequest {
-    repeated ProductDTOFromOrderService products = 1;
+    repeated ProductDTOFromOrderService products = 1; // Список товаров для проверки
 }
 
+// Ответ от инвентаря с разделением на успешные и неуспешные товары
 message ProductsResponse {
-    repeated SuccessfulProductDTOFromInventoryService successfulProducts = 1;
-    repeated UnsuccessfulProductDTOFromInventoryService unsuccessfulProducts = 2;
+    repeated SuccessfulProductDTOFromInventoryService successfulProducts = 1;   // Найденные товары
+    repeated UnsuccessfulProductDTOFromInventoryService unsuccessfulProducts = 2; // Товары, которых нет
 }
 
+// gRPC-сервис инвентаря с методом для проверки наличия товаров
 service InventoryService {
+    // Проверка наличия товаров
     rpc checkAvailability (ProductsRequest) returns (ProductsResponse);
 }
 

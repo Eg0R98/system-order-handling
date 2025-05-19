@@ -13,12 +13,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Реализация gRPC сервиса InventoryService для проверки доступности товаров.
+ * Использует ProductRepository для получения информации о товарах из базы данных.
+ */
 @GrpcService
 @RequiredArgsConstructor
 public class InventoryGRPCServiceImpl extends InventoryServiceGrpc.InventoryServiceImplBase {
 
     private final ProductRepository repository;
 
+    /**
+     * Обрабатывает запрос на проверку доступности списка товаров.
+     * Для каждого товара из запроса проверяет наличие в базе и достаточное количество.
+     * Формирует ответ с двумя списками: успешно найденных товаров и отсутствующих или с недостаточным количеством.
+     *
+     * @param request запрос с товарами и их количеством
+     * @param responseObserver объект для отправки ответа клиенту
+     */
     @Override
     public void checkAvailability(ProductsRequest request, StreamObserver<ProductsResponse> responseObserver) {
 

@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Реализация {@link JwtService} для генерации, валидации и извлечения данных из JWT-токенов.
+ */
 @Service
 public class JwtServiceImpl implements JwtService {
 

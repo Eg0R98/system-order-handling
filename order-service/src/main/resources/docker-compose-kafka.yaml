@@ -70,9 +70,10 @@ services:
       - kafka-1
       - kafka-2
       - kafka-3
-
-
 volumes:
   kafka_data_1:
   kafka_data_2:
   kafka_data_3:
+networks:
+  external-services:
+    name: external-services
