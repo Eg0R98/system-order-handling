@@ -1,6 +1,6 @@
 package com.notificationservice.service.impl;
 
-import com.notificationservice.entity.Order;
+import com.notificationservice.entity.OrderEntity;
 import com.notificationservice.repository.OrderRepository;
 import com.notificationservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
      * @return список заказов
      */
     @Override
-    public List<Order> findAll() {
+    public List<OrderEntity> findAll() {
         return repository.findAll();
     }
 
@@ -37,8 +37,8 @@ public class OrderServiceImpl implements OrderService {
      * @throws RuntimeException если заказ с данным id не найден
      */
     @Override
-    public Order findByOrderId(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("Order with id=%s not found", id)));
+    public OrderEntity findByOrderId(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("OrderEntity with id=%s not found", id)));
     }
 
     /**
@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
      * @throws RuntimeException если пользователь с данным id не найден
      */
     @Override
-    public List<Order> findByUserId(Long id) {
+    public List<OrderEntity> findByUserId(Long id) {
         return repository.findByUserId(id).orElseThrow(() -> new RuntimeException(String.format("User with id=%d not found", id)));
     }
 

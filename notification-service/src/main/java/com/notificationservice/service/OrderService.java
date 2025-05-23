@@ -1,6 +1,6 @@
 package com.notificationservice.service;
 
-import com.notificationservice.entity.Order;
+import com.notificationservice.entity.OrderEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +16,7 @@ public interface OrderService {
      *
      * @return список заказов
      */
-    List<Order> findAll();
+    List<OrderEntity> findAll();
 
     /**
      * Найти заказ по его идентификатору.
@@ -24,7 +24,7 @@ public interface OrderService {
      * @param id заказа
      * @return найденный заказ
      */
-    Order findByOrderId(UUID id);
+    OrderEntity findByOrderId(UUID id);
 
     /**
      * Найти заказы по идентификатору пользователя.
@@ -32,5 +32,5 @@ public interface OrderService {
      * @param id пользователя
      * @return список заказов пользователя
      */
-    List<Order> findByUserId(Long id);
+    List<OrderEntity> findByUserId(Long id);
 }

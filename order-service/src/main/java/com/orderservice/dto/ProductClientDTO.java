@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
- * ДТО-товар, отправляемый в кафку
+ * ДТО-товар, который присылает клиент
  */
 @Data
-public class ProductDTOFoKafka {
+public class ProductClientDTO{
 
     /*id товара*/
     private UUID id;
@@ -28,6 +28,5 @@ public class ProductDTOFoKafka {
 
     /*Скидка в виде десятичной дроби*/
     private BigDecimal sale;
-
 
 }

@@ -49,7 +49,7 @@ public class AuthController {
      * @return JwtAuthenticationResponse, хранящий токен в виде строки
      */
     @Operation(summary = "Обновление токена")
-    @GetMapping("/refresh")
+    @GetMapping("/token/refresh")
     public JwtAuthenticationResponse refreshToken(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RuntimeException("Отсутствует токен");

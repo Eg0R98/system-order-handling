@@ -1,6 +1,6 @@
 package com.inventoryservice.controller;
 
-import com.inventoryservice.entity.Product;
+import com.inventoryservice.entity.ProductEntity;
 import com.inventoryservice.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +28,10 @@ public class ProductController {
      */
     @Operation(summary = "Получить все товары")
     @GetMapping
-    public ResponseEntity<List<Product>> getAll() {
-        List<Product> products = service.findAll();
+    public ResponseEntity<List<ProductEntity>> getAll() {
+        List<ProductEntity> productEntities = service.findAll();
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(productEntities);
     }
 
     /**
@@ -42,26 +42,26 @@ public class ProductController {
      */
     @Operation(summary = "Получить товар по id")
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable UUID id) {
-        Product product = service.findById(id);
+    public ResponseEntity<ProductEntity> getById(@PathVariable UUID id) {
+        ProductEntity productEntity = service.findById(id);
 
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(productEntity);
     }
 
     /**
      * Создание нового товара.
      *
-     * @param product объект товара, полученный из тела запроса
+     * @param productEntity объект товара, полученный из тела запроса
      * @return созданный товар и HTTP-статус 201 Created с Location-заголовком
      */
     @Operation(summary = "Создать товар")
     @PostMapping("/create")
-    public ResponseEntity<Product> create(@RequestBody Product product) {
-        Product createdProduct = service.create(product);
+    public ResponseEntity<ProductEntity> create(@RequestBody ProductEntity productEntity) {
+        ProductEntity createdProductEntity = service.create(productEntity);
 
-        URI location = URI.create(String.format("/product/create/%s", createdProduct.getId()));
+        URI location = URI.create(String.format("/productEntity/create/%s", createdProductEntity.getId()));
 
-        return ResponseEntity.created(location).body(createdProduct);
+        return ResponseEntity.created(location).body(createdProductEntity);
 
     }
 

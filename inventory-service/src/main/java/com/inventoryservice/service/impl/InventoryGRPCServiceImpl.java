@@ -1,6 +1,7 @@
 package com.inventoryservice.service.impl;
 
-import com.inventoryservice.entity.Product;
+import com.inventoryservice.entity.ProductEntity;
+import com.inventoryservice.mapper.ProductMapper;
 import com.inventoryservice.repository.ProductRepository;
 import inventory.InventoryServiceGrpc;
 import inventory.Product.*;
@@ -22,46 +23,37 @@ import java.util.UUID;
 public class InventoryGRPCServiceImpl extends InventoryServiceGrpc.InventoryServiceImplBase {
 
     private final ProductRepository repository;
+    private final ProductMapper mapper;
 
     /**
      * Обрабатывает запрос на проверку доступности списка товаров.
      * Для каждого товара из запроса проверяет наличие в базе и достаточное количество.
      * Формирует ответ с двумя списками: успешно найденных товаров и отсутствующих или с недостаточным количеством.
      *
-     * @param request запрос с товарами и их количеством
+     * @param request          запрос с товарами и их количеством
      * @param responseObserver объект для отправки ответа клиенту
      */
     @Override
     public void checkAvailability(ProductsRequest request, StreamObserver<ProductsResponse> responseObserver) {
 
-        List<SuccessfulProductDTOFromInventoryService> successfulProducts = new ArrayList<>();
-        List<UnsuccessfulProductDTOFromInventoryService> unsuccessfulProducts = new ArrayList<>();
+        List<SuccessfulProductInventoryServiceDTO> successfulProducts = new ArrayList<>();
+        List<UnsuccessfulProductInventoryServiceDTO> unsuccessfulProducts = new ArrayList<>();
 
-        for (ProductDTOFromOrderService productFromRequest : request.getProductsList()) {
-            Optional<Product> optionalProduct = repository.findById(UUID.fromString(productFromRequest.getProductId()));
+        for (ProductOrderServiceDTO productFromRequest : request.getProductsList()) {
+            Optional<ProductEntity> optionalProduct = repository.findById(UUID.fromString(productFromRequest.getProductId()));
 
-            if(optionalProduct.isPresent() && optionalProduct.get().getQuantity() >= productFromRequest.getQuantity()){
-                Product product = optionalProduct.get();
-                SuccessfulProductDTOFromInventoryService item = SuccessfulProductDTOFromInventoryService.newBuilder()
-                        .setProductId(String.valueOf(product.getId()))
-                        .setName(product.getName())
-                        .setQuantity(productFromRequest.getQuantity())
-                        .setDiscountedPrice(String.valueOf(product.getDiscountedPrice()))
-                        .setTotalValueWithDiscount(String.valueOf(product.getTotalValueWithDiscount()))
-                        .setSale(String.valueOf(product.getSale()))
-                        .build();
-                successfulProducts.add(item);
-            }else{
-                UnsuccessfulProductDTOFromInventoryService unsuccessfulProduct =
-                        UnsuccessfulProductDTOFromInventoryService.newBuilder()
-                                .setProductId(productFromRequest.getProductId())
-                                .setQuantity(productFromRequest.getQuantity()).build();
-                unsuccessfulProducts.add(unsuccessfulProduct);
+            if (optionalProduct.isPresent() && optionalProduct.get().getQuantity() >= productFromRequest.getQuantity()) {
+                ProductEntity productEntity = optionalProduct.get();
+                successfulProducts.add(mapper.toSuccessfulDTO(productEntity));
+            } else {
+                unsuccessfulProducts.add(mapper.toUnsuccessfulDTO(productFromRequest));
             }
         }
 
-        ProductsResponse productsResponse = ProductsResponse.newBuilder().addAllSuccessfulProducts(successfulProducts)
-                .addAllUnsuccessfulProducts(unsuccessfulProducts).build();
+        ProductsResponse productsResponse = ProductsResponse.newBuilder()
+                .addAllSuccessfulProducts(successfulProducts)
+                .addAllUnsuccessfulProducts(unsuccessfulProducts)
+                .build();
 
         responseObserver.onNext(productsResponse);
         responseObserver.onCompleted();

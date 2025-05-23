@@ -1,6 +1,6 @@
 package com.notificationservice.configuration;
 
-import com.notificationservice.dto.OrderDTOFoKafka;
+import com.notificationservice.dto.OrderKafkaDTO;
 import com.notificationservice.exception.NonRetryableException;
 import com.notificationservice.exception.RetryableException;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -54,8 +54,8 @@ public class KafkaConfig {
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
-        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, OrderDTOFoKafka.class);
-        config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.notificationservice.dto.ProductDTOFoKafka");
+        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, OrderKafkaDTO.class);
+        config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.notificationservice.dto.ProductKafkaDTO");
         config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 

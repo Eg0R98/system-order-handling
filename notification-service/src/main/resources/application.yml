@@ -8,6 +8,10 @@ spring:
     password: root  # Пароль пользователя базы данных
     driver-class-name: org.postgresql.Driver  # JDBC-драйвер PostgreSQL
 
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.xml   # Путь к корневому changelog-файлу
+    enabled: true # Включение Liquibase при старте приложения
+
   kafka:
     consumer:
       bootstrap-servers: "127.0.0.1:9092"  # Адрес брокера Kafka
@@ -20,11 +24,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate  # Проверка соответствия схемы БД и сущностей JPA без изменения схемы
-  sql:
-    init:
-      mode: always  # Инициализация SQL-скриптов при запуске
-      schema-locations: classpath:etc/sql/schema.sql  # Путь к SQL-файлу схемы
-      # data-locations: classpath:etc/sql/data.sql  # путь к SQL-файлу с начальными данными
+#    show-sql: true       # Вывод в консоль sql-запросов
+#    properties:
+#      hibernate:
+#        format_sql: true
 
 logging:
   level:
@@ -33,3 +36,8 @@ logging:
         kafka: INFO  # Уровень логирования Kafka
       springframework:
         kafka: INFO  # Уровень логирования Spring Kafka
+    liquibase: DEBUG  # Включает отладочное логирование для Liquibase в целом
+    org.springframework.boot.autoconfigure.liquibase: DEBUG  # Логирование автоконфигурации Liquibase от Spring Boot
+    liquibase.executor.jvm.JdbcExecutor: DEBUG  # Подробное логирование SQL-запросов, выполняемых Liquibase
+#    org.hibernate.SQL: DEBUG  # Подробное логирование запросов, выполняемых Hibernate
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

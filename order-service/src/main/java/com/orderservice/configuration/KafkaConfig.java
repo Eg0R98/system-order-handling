@@ -1,7 +1,7 @@
 package com.orderservice.configuration;
 
 
-import com.orderservice.dto.OrderDTOFoKafka;
+import com.orderservice.dto.OrderKafkaDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -80,10 +80,10 @@ public class KafkaConfig {
      * Конфигурация фабрики продюсеров Kafka с настройками из application.properties.
      * Включает сериализацию ключей и значений, а также параметры производительности и подтверждений.
      *
-     * @return фабрика продюсеров Kafka для сообщений с ключом String и значением OrderDTOFoKafka
+     * @return фабрика продюсеров Kafka для сообщений с ключом String и значением OrderKafkaDTO
      */
     @Bean
-    ProducerFactory<String, OrderDTOFoKafka> producerFactory() {
+    ProducerFactory<String, OrderKafkaDTO> producerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
@@ -102,10 +102,10 @@ public class KafkaConfig {
      * Создаёт KafkaTemplate — высокоуровневый компонент для отправки сообщений Kafka,
      * использующий настроенную фабрику продюсеров.
      *
-     * @return KafkaTemplate для отправки сообщений с ключом String и значением OrderDTOFoKafka
+     * @return KafkaTemplate для отправки сообщений с ключом String и значением OrderKafkaDTO
      */
     @Bean
-    KafkaTemplate<String, OrderDTOFoKafka> kafkaTemplate() {
-        return new KafkaTemplate<String, OrderDTOFoKafka>(producerFactory());
+    KafkaTemplate<String, OrderKafkaDTO> kafkaTemplate() {
+        return new KafkaTemplate<String, OrderKafkaDTO>(producerFactory());
     }
 }

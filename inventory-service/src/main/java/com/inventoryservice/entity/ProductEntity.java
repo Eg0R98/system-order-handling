@@ -2,7 +2,6 @@ package com.inventoryservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -14,9 +13,8 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "products")
-@Getter
 @Setter
-public class Product {
+public class ProductEntity {
 
     /**
      * Уникальный идентификатор товара.
@@ -24,6 +22,7 @@ public class Product {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID id;
 
     /**
@@ -31,6 +30,7 @@ public class Product {
      * Обязательное поле, не должно быть пустым.
      */
     @NotBlank
+    @Column(name = "name")
     private String name;
 
     /**
@@ -39,6 +39,7 @@ public class Product {
      */
     @NotNull
     @DecimalMin("0.0")
+    @Column(name = "price")
     private BigDecimal price;
 
     /**
@@ -46,6 +47,7 @@ public class Product {
      * Значение не может быть отрицательным.
      */
     @Min(0)
+    @Column(name = "quantity")
     private Integer quantity;
 
     /**
@@ -55,6 +57,7 @@ public class Product {
      */
     @DecimalMin(value = "0.0")
     @DecimalMax(value = "1.0")
+    @Column(name = "sale")
     private BigDecimal sale;
 
     /**
@@ -78,5 +81,25 @@ public class Product {
             return BigDecimal.ZERO;
         }
         return getDiscountedPrice().multiply(BigDecimal.valueOf(quantity));
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public BigDecimal getSale() {
+        return sale;
     }
 }

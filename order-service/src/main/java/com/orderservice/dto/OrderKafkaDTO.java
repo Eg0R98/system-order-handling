@@ -9,7 +9,7 @@ import java.util.UUID;
  * ДТО-заказ, отправляемый в кафку
  */
 @Data
-public class OrderDTOFoKafka {
+public class OrderKafkaDTO {
 
     /*id заказа. Генерируется при отправке*/
     private UUID id = UUID.randomUUID();
@@ -18,6 +18,6 @@ public class OrderDTOFoKafka {
     private Long userId;
 
     /* Список заказанных товаров*/
-    private List<ProductDTOFoKafka> products;
+    private List<ProductKafkaDTO> products;
 
 }

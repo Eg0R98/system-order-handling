@@ -1,6 +1,7 @@
 package com.orderservice.service.impl;
 
-import com.orderservice.entity.User;
+import com.orderservice.entity.UserEntity;
+import com.orderservice.exception.NotUserNameException;
 import com.orderservice.repository.UserRepository;
 import com.orderservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,21 +26,18 @@ public class UserServiceImpl implements UserService {
     /**
      * Создание пользователя с предварительной проверкой уникальности имени и email.
      *
-     * @param user объект пользователя
+     * @param userEntity объект пользователя
      * @return сохранённый пользователь
      * @throws RuntimeException если имя пользователя или email уже заняты
      */
-    public User create(User user) {
-        if (repository.existsByUsername(user.getUsername())) {
+    public UserEntity create(UserEntity userEntity) {
+        if (repository.existsByUsername(userEntity.getUsername())) {
 
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            // нужны кастомные исключения
+            throw new NotUserNameException("Пользователь с таким именем уже существует");
         }
 
-        if (repository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
-        }
-
-        return repository.save(user);
+        return repository.save(userEntity);
     }
 
     /**
@@ -48,7 +46,7 @@ public class UserServiceImpl implements UserService {
      * @return пользователь
      * @throws UsernameNotFoundException если пользователь не найден
      */
-    public User getByUsername(String username) {
+    public UserEntity getByUsername(String username) {
         return repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
@@ -67,7 +65,7 @@ public class UserServiceImpl implements UserService {
      * @return текущий пользователь
      * @throws UsernameNotFoundException если пользователь не найден
      */
-    public User getCurrentUser() {
+    public UserEntity getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByUsername(username);
@@ -77,12 +75,12 @@ public class UserServiceImpl implements UserService {
      * Получение id текущего пользователя из контекста безопасности.
      *
      * @return id текущего пользователя
-     * @throws IllegalStateException если объект principal не является экземпляром User
+     * @throws IllegalStateException если объект principal не является экземпляром UserEntity
      */
     public Long getCurrentUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof User user) {
-            return user.getId();
+        if (principal instanceof UserEntity userEntity) {
+            return userEntity.getId();
         }
         throw new IllegalStateException("Пользователь не найден в контексте безопасности");
     }

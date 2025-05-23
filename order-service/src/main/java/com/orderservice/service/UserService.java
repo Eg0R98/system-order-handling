@@ -1,6 +1,6 @@
 package com.orderservice.service;
 
-import com.orderservice.entity.User;
+import com.orderservice.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +14,10 @@ public interface UserService {
      /**
       * Создание нового пользователя.
       *
-      * @param user объект пользователя
+      * @param userEntity объект пользователя
       * @return созданный пользователь
       */
-     User create(User user);
+     UserEntity create(UserEntity userEntity);
 
      /**
       * Получение пользователя по его имени.
@@ -25,7 +25,7 @@ public interface UserService {
       * @param username имя пользователя
       * @return пользователь
       */
-     User getByUsername(String username);
+     UserEntity getByUsername(String username);
 
      /**
       * Возвращение реализацию {@link UserDetailsService}, основанную на методе получения пользователя по имени.
@@ -39,7 +39,7 @@ public interface UserService {
       *
       * @return текущий пользователь
       */
-     User getCurrentUser();
+     UserEntity getCurrentUser();
 
      /**
       * Получение id текущего пользователя.

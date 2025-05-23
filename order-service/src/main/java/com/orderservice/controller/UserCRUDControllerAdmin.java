@@ -1,7 +1,7 @@
 package com.orderservice.controller;
 
-import com.orderservice.entity.User;
-import com.orderservice.service.UserCRUDServiceForAdmin;
+import com.orderservice.entity.UserEntity;
+import com.orderservice.service.UserCRUDServiceAdmin;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ import java.util.List;
 @RequestMapping("/users")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-public class UserCRUDControllerForAdmin {
+public class UserCRUDControllerAdmin {
 
-    private final UserCRUDServiceForAdmin serviceForAdmin;
+    private final UserCRUDServiceAdmin serviceForAdmin;
 
     /**
      * Получение всех пользователей
@@ -28,9 +28,9 @@ public class UserCRUDControllerForAdmin {
      */
     @Operation(summary = "Получить всех пользователей")
     @GetMapping
-    public ResponseEntity<List<User>> getAll() {
-        List<User> users = serviceForAdmin.findAll();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserEntity>> getAll() {
+        List<UserEntity> userEntities = serviceForAdmin.findAll();
+        return ResponseEntity.ok(userEntities);
     }
 
     /**
@@ -40,26 +40,26 @@ public class UserCRUDControllerForAdmin {
      */
     @Operation(summary = "Получить пользователя по id")
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        User user = serviceForAdmin.findById(id);
+    public ResponseEntity<UserEntity> getById(@PathVariable Long id) {
+        UserEntity userEntity = serviceForAdmin.findById(id);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userEntity);
     }
 
     /**
      * Создание нового пользователя.
      *
-     * @param user данные нового пользователя
+     * @param userEntity данные нового пользователя
      * @return HTTP 201 Created и созданный объект пользователя
      */
     @Operation(summary = "Создать пользователя")
     @PostMapping("/create")
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User createdUser = serviceForAdmin.create(user);
+    public ResponseEntity<UserEntity> create(@RequestBody UserEntity userEntity) {
+        UserEntity createdUserEntity = serviceForAdmin.create(userEntity);
 
-        URI location = URI.create(String.format("/user/%d", createdUser.getId()));
+        URI location = URI.create(String.format("/userEntity/%d", createdUserEntity.getId()));
 
-        return ResponseEntity.created(location).body(createdUser);
+        return ResponseEntity.created(location).body(createdUserEntity);
 
     }
 
@@ -67,15 +67,15 @@ public class UserCRUDControllerForAdmin {
      * Обновление существующего пользователя по id.
      *
      * @param id пользователя
-     * @param user данные пользователя для обновления
+     * @param userEntity данные пользователя для обновления
      * @return HTTP 200 OK и обновлённый пользователь
      */
     @Operation(summary = "Обновить пользователя по id")
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = serviceForAdmin.update(user, id);
+    public ResponseEntity<UserEntity> update(@PathVariable Long id, @RequestBody UserEntity userEntity) {
+        UserEntity updatedUserEntity = serviceForAdmin.update(userEntity, id);
 
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(updatedUserEntity);
 
     }
 

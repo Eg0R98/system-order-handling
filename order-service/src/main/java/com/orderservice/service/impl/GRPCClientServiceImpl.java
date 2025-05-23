@@ -1,11 +1,12 @@
 package com.orderservice.service.impl;
 
-import com.orderservice.dto.OrderDTOFromClient;
+import com.orderservice.dto.OrderClientDTO;
+import com.orderservice.mapping.OrderMapper;
 import com.orderservice.service.GRPCClientService;
 import inventory.InventoryServiceGrpc;
-import inventory.Product.ProductDTOFromOrderService;
 import inventory.Product.ProductsRequest;
 import inventory.Product.ProductsResponse;
+import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
  * Реализация клиента для обращения к inventory-сервису по gRPC-протоколу.
  */
 @Service
+@RequiredArgsConstructor
 public class GRPCClientServiceImpl implements GRPCClientService {
+
+    private final OrderMapper mapper;
 
     /**
      * gRPC-заглушка для обращения к inventory-сервису.
@@ -25,17 +29,13 @@ public class GRPCClientServiceImpl implements GRPCClientService {
      * Формирует запрос на основе товаров из заказа клиента и отправляет его
      * в inventory-сервис для проверки наличия на складе.
      *
-     * @param orderDTOFromClient заказ, полученный от клиента
+     * @param orderClientDTO заказ, полученный от клиента
      * @return ответ inventory-сервиса с результатом проверки
      */
     @Override
-    public ProductsResponse checkAvailability(OrderDTOFromClient orderDTOFromClient) {
-        ProductsRequest productsRequest = ProductsRequest.newBuilder().addAllProducts(
-                orderDTOFromClient.getProducts().stream().map(productDTO ->
-                                ProductDTOFromOrderService.newBuilder()
-                                        .setProductId(String.valueOf(productDTO.getId()))
-                                        .setQuantity(productDTO.getQuantity()).build())
-                        .toList()).build();
+    public ProductsResponse checkAvailability(OrderClientDTO orderClientDTO) {
+
+        ProductsRequest productsRequest = mapper.toProductResponse(orderClientDTO);
 
         return inventoryStub.checkAvailability(productsRequest);
 

@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Сущность заказа (Order).
+ * Сущность заказа (OrderEntity).
  * Представляет заказ пользователя, содержит идентификатор пользователя и список товаров.
  */
 @Entity
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Order {
+public class OrderEntity {
 
     /**
      * Уникальный идентификатор заказа.
@@ -38,11 +38,11 @@ public class Order {
 
     /**
      * Список товаров, входящих в заказ.
-     * Связь один-ко-многим с сущностью Product.
+     * Связь один-ко-многим с сущностью ProductEntity.
      */
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "orderEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull
-    List<Product> products;
+    List<ProductEntity> productEntities;
 
     /**
      * Переопределённый метод equals для сравнения сущностей по идентификатору.
@@ -58,8 +58,8 @@ public class Order {
         Class<?> oEffectiveClass = o instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Order order = (Order) o;
-        return getId() != null && Objects.equals(getId(), order.getId());
+        OrderEntity orderEntity = (OrderEntity) o;
+        return getId() != null && Objects.equals(getId(), orderEntity.getId());
     }
 
     /**

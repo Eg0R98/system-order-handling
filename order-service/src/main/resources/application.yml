@@ -8,6 +8,10 @@ spring:
     password: root  # Пароль для подключения к БД
     driver-class-name: org.postgresql.Driver  # Драйвер JDBC для PostgreSQL
 
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.xml   # Путь к корневому changelog-файлу
+    enabled: true # Включение Liquibase при старте приложения
+
   output:
     ansi:
       enabled: ALWAYS  # Включение цветного вывода в консоли (для читаемости логов)
@@ -16,11 +20,7 @@ spring:
     hibernate:
       ddl-auto: validate  # Проверка схемы БД при запуске
 
-  sql:
-    init:
-      mode: always  # Автоматический запуск SQL-скриптов
-      schema-locations: classpath:etc/sql/schema.sql  # Путь к SQL-скрипту с DDL (создание схемы)
-  #      data-locations: classpath:etc/sql/data.sql  # Путь к SQL-скрипту с начальными данными
+
 
   kafka:
     producer:
@@ -69,3 +69,14 @@ grpc:
     inventory-service:
       address: "localhost:9090"  # Адрес gRPC-сервиса инвентаризации
       negotiationType: plaintext  # Тип шифрования (в данном случае — без шифрования)
+
+logging:
+  level:
+    org:
+      apache:
+        kafka: INFO  # Уровень логирования Kafka
+      springframework:
+        kafka: INFO  # Уровень логирования Spring Kafka
+    liquibase: DEBUG  # Включает отладочное логирование для Liquibase в целом
+    org.springframework.boot.autoconfigure.liquibase: DEBUG  # Логирование автоконфигурации Liquibase от Spring Boot
+    liquibase.executor.jvm.JdbcExecutor: DEBUG  # Подробное логирование SQL-запросов, выполняемых Liquibase

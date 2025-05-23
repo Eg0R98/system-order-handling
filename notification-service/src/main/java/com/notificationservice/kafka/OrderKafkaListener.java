@@ -1,13 +1,14 @@
 package com.notificationservice.kafka;
 
-import com.notificationservice.dto.OrderDTOFoKafka;
-import com.notificationservice.entity.Order;
+import com.notificationservice.dto.OrderKafkaDTO;
+import com.notificationservice.entity.OrderEntity;
 import com.notificationservice.exception.NonRetryableException;
 import com.notificationservice.exception.RetryableException;
 import com.notificationservice.mapping.OrderMapper;
 import com.notificationservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@KafkaListener(topics = "order-topic", groupId = "order-events", containerFactory = "kafkaListenerContainerFactory")
 public class OrderKafkaListener {
 
     private final OrderMapper mapper;
@@ -35,9 +37,8 @@ public class OrderKafkaListener {
      *
      * @param orderDTO DTO заказа, полученный из Kafka
      */
-    @KafkaListener(topics = "order-topic", groupId = "order-events",
-            containerFactory = "kafkaListenerContainerFactory")
-    public void processOrder(OrderDTOFoKafka orderDTO) {
+    @KafkaHandler
+    public void processOrder(OrderKafkaDTO orderDTO) {
 
         log.info("Получен orderDTO: {}", orderDTO);
 
@@ -45,13 +46,14 @@ public class OrderKafkaListener {
 
         try {
             if (repository.existsById(orderId)) {
-                log.info("Order {} уже обработан.", orderId);
+                log.info("OrderEntity {} уже обработан.", orderId);
                 return;
             }
 
-            Order orderEntity = mapper.mapToOrderWithProducts(orderDTO);
-            log.info("Order {} сохранен в бд.", orderId);
+            OrderEntity orderEntity = mapper.mapToOrderWithProducts(orderDTO);
             repository.save(orderEntity);
+            log.info("OrderEntity {} сохранен в бд.", orderId);
+
 
         } catch (ResourceAccessException e) {
             log.error(e.getMessage());

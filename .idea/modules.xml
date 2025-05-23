@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/InventoryService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/InventoryService.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InventoryService.test.iml" filepath="$PROJECT_DIR$/.idea/modules/InventoryService.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/NotificationService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/NotificationService.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NotificationService.test.iml" filepath="$PROJECT_DIR$/.idea/modules/NotificationService.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OrderService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OrderService.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OrderService.test.iml" filepath="$PROJECT_DIR$/.idea/modules/OrderService.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/system-order-handling.iml" filepath="$PROJECT_DIR$/system-order-handling.iml" />
     </modules>
   </component>

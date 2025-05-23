@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Сущность товара (Product).
+ * Сущность товара (ProductEntity).
  * Содержит информацию о товаре, который входит в заказ.
  */
 @Entity
@@ -19,46 +19,52 @@ import java.util.UUID;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Product {
+public class ProductEntity {
 
     /**
      * Уникальный идентификатор товара.
      */
     @Id
+    @Column(name = "id")
     private UUID id;
 
     /**
      * Название товара.
      */
+    @Column(name = "name")
     private String name;
 
     /**
      * Цена товара с учётом скидки.
      */
+    @Column(name = "discountedPrice")
     private BigDecimal discountedPrice;
 
     /**
      * Общая стоимость товара с учётом количества и скидки.
      */
+    @Column(name = "totalValueWithDiscount")
     private BigDecimal totalValueWithDiscount;
 
     /**
      * Количество товара.
      */
+    @Column(name = "quantity")
     private Integer quantity;
 
     /**
      * Скидка на товар в виде десятичной дроби (например, 0.10 = 10%).
      */
+    @Column(name = "sale")
     private BigDecimal sale;
 
     /**
      * Заказ, к которому относится товар.
-     * Связь многие-к-одному с сущностью Order.
+     * Связь многие-к-одному с сущностью OrderEntity.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderEntity orderEntity;
 
 
     /**
@@ -75,8 +81,8 @@ public class Product {
         Class<?> oEffectiveClass = o instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Product product = (Product) o;
-        return getId() != null && Objects.equals(getId(), product.getId());
+        ProductEntity productEntity = (ProductEntity) o;
+        return getId() != null && Objects.equals(getId(), productEntity.getId());
     }
 
     /**

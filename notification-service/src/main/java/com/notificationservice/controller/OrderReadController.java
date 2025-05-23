@@ -1,6 +1,6 @@
 package com.notificationservice.controller;
 
-import com.notificationservice.entity.Order;
+import com.notificationservice.entity.OrderEntity;
 import com.notificationservice.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,10 +32,10 @@ public class OrderReadController {
      */
     @Operation(summary = "Получить все заказы")
     @GetMapping
-    public ResponseEntity<List<Order>> getAll() {
-        List<Order> orders = service.findAll();
+    public ResponseEntity<List<OrderEntity>> getAll() {
+        List<OrderEntity> orderEntities = service.findAll();
 
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(orderEntities);
     }
 
     /**
@@ -46,10 +46,10 @@ public class OrderReadController {
      */
     @Operation(summary = "Получить заказ по его id")
     @GetMapping("/order/{orderId}")
-    public ResponseEntity<Order> getByOrderId(@PathVariable UUID orderId) {
-        Order order = service.findByOrderId(orderId);
+    public ResponseEntity<OrderEntity> getByOrderId(@PathVariable UUID orderId) {
+        OrderEntity orderEntity = service.findByOrderId(orderId);
 
-        return ResponseEntity.ok(order);
+        return ResponseEntity.ok(orderEntity);
     }
 
     /**
@@ -60,10 +60,10 @@ public class OrderReadController {
      */
     @Operation(summary = "Получить заказы по id пользователя")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Order>> getByUserId(@PathVariable Long userId) {
-        List<Order> orders = service.findByUserId(userId);
+    public ResponseEntity<List<OrderEntity>> getByUserId(@PathVariable Long userId) {
+        List<OrderEntity> orderEntities = service.findByUserId(userId);
 
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(orderEntities);
     }
 
 

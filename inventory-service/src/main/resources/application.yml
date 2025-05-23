@@ -8,6 +8,10 @@ spring:
     username: root  # Имя пользователя для подключения к базе
     driver-class-name: org.postgresql.Driver  # Драйвер базы данных
 
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.xml   # Путь к корневому changelog-файлу
+    enabled: true # Включение Liquibase при старте приложения
+
   output:
     ansi:
       enabled: ALWAYS # Включить ANSI-коды в выводе (цветной лог)
@@ -16,16 +20,15 @@ spring:
     hibernate:
       ddl-auto: validate # Hibernate будет проверять соответствие схемы БД сущностям (не изменяет схему)
 
-  sql:
-    init:
-      mode: always # Инициализация SQL будет запускаться всегда при старте приложения
-      schema-locations: classpath:etc/sql/schema.sql # Путь к файлу SQL со схемой БД
-      #data-locations: classpath:etc/sql/data.sql  # Путь к файлу с начальными данными
-
 grpc:
   server:
     port: 9090 # Порт для gRPC-сервера
     security:
       enabled: false # Отключена безопасность (TLS) для gRPC
-    name: inventory-service # Имя gRPC-сервера
+      name: inventory-service # Имя gRPC-сервера
 
+logging:
+  level:
+    liquibase: DEBUG  # Включает отладочное логирование для Liquibase в целом
+    org.springframework.boot.autoconfigure.liquibase: DEBUG  # Логирование автоконфигурации Liquibase от Spring Boot
+    liquibase.executor.jvm.JdbcExecutor: DEBUG  # Подробное логирование SQL-запросов, выполняемых Liquibase

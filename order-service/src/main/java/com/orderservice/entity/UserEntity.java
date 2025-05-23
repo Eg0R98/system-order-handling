@@ -25,7 +25,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 
     /**
      * id пользователя
@@ -44,10 +44,6 @@ public class User implements UserDetails {
     /*Пароль пользователя*/
     @Column(name = "password", nullable = false)
     private String password;
-
-    /*email пользователя*/
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;
 
     /*Роль пользователя*/
     @Enumerated(EnumType.STRING)
@@ -93,8 +89,8 @@ public class User implements UserDetails {
         Class<?> oEffectiveClass = o instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        User user = (User) o;
-        return getId() != null && Objects.equals(getId(), user.getId());
+        UserEntity userEntity = (UserEntity) o;
+        return getId() != null && Objects.equals(getId(), userEntity.getId());
     }
 
     /*Переопределение hashCode с помощью Hibernate-прокси*/

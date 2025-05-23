@@ -4,12 +4,11 @@ CREATE SEQUENCE IF NOT EXISTS user_id_seq
     START WITH 1            -- Начальное значение
     INCREMENT BY 1;         -- Шаг увеличения
 
--- Создание таблицы "users", если она ещё не существует
+-- Создание таблицы "userEntities", если она ещё не существует
 CREATE TABLE IF NOT EXISTS users (
    id BIGINT NOT NULL,                      -- Уникальный идентификатор пользователя
    username VARCHAR NOT NULL,               -- Имя пользователя (логин)
    password VARCHAR NOT NULL,               -- Хэш пароля
-   email VARCHAR NOT NULL,                  -- Email пользователя
    role VARCHAR NOT NULL,                   -- Роль (например, USER, ADMIN)
 
    -- Установка первичного ключа на поле id

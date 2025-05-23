@@ -1,6 +1,6 @@
 package com.orderservice.service.impl;
 
-import com.orderservice.entity.User;
+import com.orderservice.entity.UserEntity;
 import com.orderservice.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -46,10 +46,9 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        if (userDetails instanceof User customUserDetails) {
-            claims.put("id", customUserDetails.getId());
-            claims.put("email", customUserDetails.getEmail());
-            claims.put("role", customUserDetails.getRole().name());
+        if (userDetails instanceof UserEntity customUserEntityDetails) {
+            claims.put("id", customUserEntityDetails.getId());
+            claims.put("role", customUserEntityDetails.getRole().name());
         }
         return generateToken(claims, userDetails);
     }

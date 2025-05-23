@@ -1,6 +1,6 @@
 package com.orderservice.service;
 
-import com.orderservice.dto.OrderDTOFoKafka;
+import com.orderservice.dto.OrderKafkaDTO;
 
 /**
  * Сервис для отправки заказов в Kafka.
@@ -12,5 +12,5 @@ public interface KafkaProducerService {
      *
      * @param order ДТО заказа для Kafka
      */
-    void sendOrderToKafka(OrderDTOFoKafka order);
+    void sendOrderToKafka(OrderKafkaDTO order);
 }

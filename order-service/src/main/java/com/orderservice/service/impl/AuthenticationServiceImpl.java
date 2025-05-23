@@ -3,7 +3,7 @@ package com.orderservice.service.impl;
 import com.orderservice.dto.AuthRequest;
 import com.orderservice.dto.JwtAuthenticationResponse;
 import com.orderservice.dto.RegRequest;
-import com.orderservice.entity.User;
+import com.orderservice.entity.UserEntity;
 import com.orderservice.security.Role;
 import com.orderservice.service.AuthenticationService;
 import com.orderservice.service.JwtService;
@@ -37,9 +37,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse registration(RegRequest request) {
 
-        var user = User.builder()
+        var user = UserEntity.builder()
                 .username(request.getUsername())
-                .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();

@@ -1,6 +1,6 @@
 package com.orderservice.security;
 
-import com.orderservice.entity.User;
+import com.orderservice.entity.UserEntity;
 import com.orderservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +27,8 @@ public class AdminInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (userRepository.findByUsername(adminProperties.getUsername()).isEmpty()) {
-            User admin = User.builder()
+            UserEntity admin = UserEntity.builder()
                     .username(adminProperties.getUsername())
-                    .email(adminProperties.getEmail())
                     .password(passwordEncoder.encode(adminProperties.getPassword()))
                     .role(Role.ADMIN)
                     .build();

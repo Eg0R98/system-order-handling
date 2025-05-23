@@ -2,11 +2,11 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY ../module-service1/build/libs/service1.jar ./service1.jar
-COPY ../module-service2/build/libs/service2.jar ./service2.jar
-COPY ../module-service3/build/libs/service3.jar ./service3.jar
+COPY orderEntity-service/build/libs/OrderService-0.0.1-SNAPSHOT.jar ./OrderService.jar
+COPY inventory-service/build/libs/InventoryService-0.0.1-SNAPSHOT.jar ./InventoryService.jar
+COPY notification-service/build/libs/NotificationService-0.0.1-SNAPSHOT.jar ./NotificationService.jar
 
-COPY start-services.sh ./start-services.sh
+COPY ../start-services.sh ./start-services.sh
 RUN chmod +x ./start-services.sh
 
 EXPOSE 8085 8086 8087

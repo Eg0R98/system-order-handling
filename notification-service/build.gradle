@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.liquibase.gradle' version '2.2.0'
 }
 
 group = 'com.notificationservice'
@@ -17,6 +18,14 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+	main {
+		resources {
+			srcDirs += ['etc/sql']
+		}
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.kafka:spring-kafka'
@@ -30,16 +39,27 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.36'
 	annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
+	implementation 'org.liquibase:liquibase-core:4.27.0'
+
 	implementation 'org.postgresql:postgresql:42.7.5'
 	runtimeOnly 'org.postgresql:postgresql'
 
 	implementation 'org.mapstruct:mapstruct:1.6.3'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
-//	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+liquibase {
+	activities {
+		main {
+			changeLogFile 'etc/sql/db.changelog/db.changelog-master.xml'
+
+		}
+	}
+	runList = 'main'
 }
 
 tasks.named('test') {

@@ -8,10 +8,9 @@ import java.util.List;
  * ДТО-заказ, приходящий от клиента
  */
 @Data
-public class OrderDTOFromClient {
-
+public class OrderClientDTO {
 
     /* Список заказанных товаров*/
-    List<ProductDTOFromClient> products;
+    List<ProductClientDTO> products;
 
 }
