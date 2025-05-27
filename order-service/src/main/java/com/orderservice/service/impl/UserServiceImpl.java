@@ -31,12 +31,7 @@ public class UserServiceImpl implements UserService {
      * @throws RuntimeException если имя пользователя или email уже заняты
      */
     public UserEntity create(UserEntity userEntity) {
-        if (repository.existsByUsername(userEntity.getUsername())) {
-
-            // нужны кастомные исключения
-            throw new NotUserNameException("Пользователь с таким именем уже существует");
-        }
-
+        if (repository.existsByUsername(userEntity.getUsername())) throw new NotUserNameException("Пользователь с таким именем уже существует");
         return repository.save(userEntity);
     }
 

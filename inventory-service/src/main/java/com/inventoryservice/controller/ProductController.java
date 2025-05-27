@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 /**
@@ -27,7 +26,7 @@ public class ProductController {
      * @return список всех товаров в виде ResponseEntity с HTTP-статусом 200 OK
      */
     @Operation(summary = "Получить все товары")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ProductEntity>> getAll() {
         List<ProductEntity> productEntities = service.findAll();
 
@@ -51,17 +50,15 @@ public class ProductController {
     /**
      * Создание нового товара.
      *
-     * @param productEntity объект товара, полученный из тела запроса
+     * @param productEntities объект или объекты товара, полученного из тела запроса
      * @return созданный товар и HTTP-статус 201 Created с Location-заголовком
      */
     @Operation(summary = "Создать товар")
     @PostMapping("/create")
-    public ResponseEntity<ProductEntity> create(@RequestBody ProductEntity productEntity) {
-        ProductEntity createdProductEntity = service.create(productEntity);
+    public ResponseEntity<List<ProductEntity>> create(@RequestBody List<ProductEntity> productEntities) {
+        List<ProductEntity> createdProductEntities = service.create(productEntities);
 
-        URI location = URI.create(String.format("/productEntity/create/%s", createdProductEntity.getId()));
-
-        return ResponseEntity.created(location).body(createdProductEntity);
+        return ResponseEntity.ok(createdProductEntities);
 
     }
 

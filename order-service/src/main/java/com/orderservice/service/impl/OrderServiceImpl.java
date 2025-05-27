@@ -63,8 +63,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Создание DTO для отправки в Kafka
-
-
         List<SuccessfulProductInventoryServiceDTO> successfulProductsList = productsResponse.getSuccessfulProductsList();
 
         // Преобразование товаров в формат для Kafka

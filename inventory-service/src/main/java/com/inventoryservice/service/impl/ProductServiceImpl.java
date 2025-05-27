@@ -1,6 +1,7 @@
 package com.inventoryservice.service.impl;
 
 import com.inventoryservice.entity.ProductEntity;
+import com.inventoryservice.exception.ProductNotFoundException;
 import com.inventoryservice.repository.ProductRepository;
 import com.inventoryservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -35,22 +36,22 @@ public class ProductServiceImpl implements ProductService {
      *
      * @param id уникальный идентификатор товара
      * @return найденный объект ProductEntity
-     * @throws RuntimeException если товар не найден
+     * @throws ProductNotFoundException если товар не найден
      */
     @Override
     public ProductEntity findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("ProductEntity with id=%s not found", id)));
+        return repository.findById(id).orElseThrow(() -> new ProductNotFoundException(String.format("ProductEntity with id=%s not found", id)));
     }
 
     /**
      * Создание нового товара.
      *
-     * @param productEntity объект ProductEntity для сохранения
+     * @param productEntities объект ProductEntity для сохранения
      * @return сохранённый объект ProductEntity
      */
     @Override
-    public ProductEntity create(ProductEntity productEntity) {
-        return repository.save(productEntity);
+    public List<ProductEntity> create(List<ProductEntity> productEntities) {
+        return repository.saveAll(productEntities);
     }
 
     /**

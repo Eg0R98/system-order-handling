@@ -1,7 +1,7 @@
 package com.orderservice.controller;
 
 import com.orderservice.entity.UserEntity;
-import com.orderservice.service.UserCRUDServiceAdmin;
+import com.orderservice.service.AdminUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ import java.util.List;
 @RequestMapping("/users")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-public class UserCRUDControllerAdmin {
+public class AdminUserCrudController {
 
-    private final UserCRUDServiceAdmin serviceForAdmin;
+    private final AdminUserService serviceAdmin;
 
     /**
      * Получение всех пользователей
@@ -29,7 +29,7 @@ public class UserCRUDControllerAdmin {
     @Operation(summary = "Получить всех пользователей")
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAll() {
-        List<UserEntity> userEntities = serviceForAdmin.findAll();
+        List<UserEntity> userEntities = serviceAdmin.findAll();
         return ResponseEntity.ok(userEntities);
     }
 
@@ -41,7 +41,7 @@ public class UserCRUDControllerAdmin {
     @Operation(summary = "Получить пользователя по id")
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getById(@PathVariable Long id) {
-        UserEntity userEntity = serviceForAdmin.findById(id);
+        UserEntity userEntity = serviceAdmin.findById(id);
 
         return ResponseEntity.ok(userEntity);
     }
@@ -55,7 +55,7 @@ public class UserCRUDControllerAdmin {
     @Operation(summary = "Создать пользователя")
     @PostMapping("/create")
     public ResponseEntity<UserEntity> create(@RequestBody UserEntity userEntity) {
-        UserEntity createdUserEntity = serviceForAdmin.create(userEntity);
+        UserEntity createdUserEntity = serviceAdmin.create(userEntity);
 
         URI location = URI.create(String.format("/userEntity/%d", createdUserEntity.getId()));
 
@@ -73,7 +73,7 @@ public class UserCRUDControllerAdmin {
     @Operation(summary = "Обновить пользователя по id")
     @PutMapping("/{id}")
     public ResponseEntity<UserEntity> update(@PathVariable Long id, @RequestBody UserEntity userEntity) {
-        UserEntity updatedUserEntity = serviceForAdmin.update(userEntity, id);
+        UserEntity updatedUserEntity = serviceAdmin.update(userEntity, id);
 
         return ResponseEntity.ok(updatedUserEntity);
 
@@ -89,7 +89,7 @@ public class UserCRUDControllerAdmin {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-        serviceForAdmin.delete(id);
+        serviceAdmin.delete(id);
 
         return ResponseEntity.noContent().build();
     }

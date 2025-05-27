@@ -24,7 +24,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "UserEntity")
 public class UserEntity implements UserDetails {
 
     /**

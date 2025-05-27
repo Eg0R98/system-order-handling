@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 @GrpcService
 @RequiredArgsConstructor
-public class InventoryGRPCServiceImpl extends InventoryServiceGrpc.InventoryServiceImplBase {
+public class GRPCService extends InventoryServiceGrpc.InventoryServiceImplBase {
 
     private final ProductRepository repository;
     private final ProductMapper mapper;

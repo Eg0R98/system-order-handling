@@ -8,7 +8,7 @@ import java.util.List;
  * Сервис для администрирования пользователей.
  * Предоставляет базовые CRUD-операции: создание, чтение, обновление и удаление пользователей.
  */
-public interface UserCRUDServiceAdmin {
+public interface AdminUserService {
 
     /**
      * Получение список всех пользователей.

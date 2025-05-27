@@ -2,7 +2,7 @@ package com.orderservice.service.impl;
 
 import com.orderservice.entity.UserEntity;
 import com.orderservice.repository.UserRepository;
-import com.orderservice.service.UserCRUDServiceAdmin;
+import com.orderservice.service.AdminUserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Реализация сервиса {@link UserCRUDServiceAdmin} для управления пользователями администратором.
+ * Реализация сервиса {@link AdminUserService} для управления пользователями администратором.
  * Использует {@link UserRepository} для взаимодействия с базой данных.
  */
 @Service
 @RequiredArgsConstructor
-public class UserCRUDServiceAdminImpl implements UserCRUDServiceAdmin {
+public class AdminUserServiceImpl implements AdminUserService {
 
     private final UserRepository repository;
 

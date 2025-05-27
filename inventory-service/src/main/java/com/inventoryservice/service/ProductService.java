@@ -25,10 +25,10 @@ public interface ProductService {
 
     /**
      * Создание нового товара.
-     * @param productEntity объект товара для создания
+     * @param productEntities объект или объекты товара для создания
      * @return созданный товар с заполненным идентификатором
      */
-    ProductEntity create(ProductEntity productEntity);
+    List<ProductEntity> create(List<ProductEntity> productEntities);
 
     /**
      * Удаление товара по его id.

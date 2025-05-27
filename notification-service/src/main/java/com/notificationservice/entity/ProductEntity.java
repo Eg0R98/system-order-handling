@@ -15,12 +15,11 @@ import java.util.UUID;
  * Содержит информацию о товаре, который входит в заказ.
  */
 @Entity
-@Table(name = "products")
+@Table(name = "ProductEntity")
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class ProductEntity {
-
     /**
      * Уникальный идентификатор товара.
      */

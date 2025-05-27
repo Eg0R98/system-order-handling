@@ -1,6 +1,6 @@
 package com.notificationservice.mapping;
 
-import com.notificationservice.dto.OrderKafkaDTO;
+import com.notificationservice.dto.KafkaOrderDTO;
 import com.notificationservice.dto.ProductKafkaDTO;
 import com.notificationservice.entity.OrderEntity;
 import com.notificationservice.entity.ProductEntity;
@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 /**
- * Mapper для преобразования между DTO заказов (OrderKafkaDTO) и сущностями OrderEntity и ProductEntity.
+ * Mapper для преобразования между DTO заказов (KafkaOrderDTO) и сущностями OrderEntity и ProductEntity.
  * Использует MapStruct для автоматического маппинга, с некоторыми исключениями для вложенных сущностей.
  */
 @Mapper(componentModel = "spring")
@@ -24,7 +24,7 @@ public interface OrderMapper {
      * @return сущность OrderEntity без списка продуктов
      */
     @Mapping(target = "productEntities", ignore = true)
-    OrderEntity toOrderEntity(OrderKafkaDTO orderDTO);
+    OrderEntity toOrderEntity(KafkaOrderDTO orderDTO);
 
     /**
      * Преобразует DTO продукта в сущность ProductEntity.
@@ -44,7 +44,7 @@ public interface OrderMapper {
      * @param dto DTO заказа с продуктами
      * @return сущность OrderEntity с инициализированным списком продуктов
      */
-    default OrderEntity mapToOrderWithProducts(OrderKafkaDTO dto) {
+    default OrderEntity mapToOrderWithProducts(KafkaOrderDTO dto) {
         OrderEntity orderEntity = toOrderEntity(dto);
         if (dto.getProducts() != null) {
         List<ProductEntity> productEntities = dto.getProducts().stream()

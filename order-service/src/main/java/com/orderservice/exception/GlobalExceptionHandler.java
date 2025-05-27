@@ -25,18 +25,4 @@ public class GlobalExceptionHandler {
         log.warn("Entity not found", e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
-
-//    @ExceptionHandler(NotRequiredProductException.class)
-//    public ResponseEntity<?> handleNotRequiredProductException(NotRequiredProductException ex) {
-//        // Извлекаем имена товаров прямо здесь
-//        List<String> missingProductNames = ex.getMissingProducts().stream()
-//                .map(UnsuccessfulProductDTOFromInventoryService::getName) // или другой метод
-//                .collect(Collectors.toList());
-//
-//        Map<String, Object> body = new HashMap<>();
-//        body.put("message", ex.getMessage());
-//        body.put("missingProducts", missingProductNames);
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-//    }
 }

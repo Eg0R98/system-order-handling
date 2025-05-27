@@ -1,6 +1,6 @@
 package com.notificationservice.kafka;
 
-import com.notificationservice.dto.OrderKafkaDTO;
+import com.notificationservice.dto.KafkaOrderDTO;
 import com.notificationservice.entity.OrderEntity;
 import com.notificationservice.exception.NonRetryableException;
 import com.notificationservice.exception.RetryableException;
@@ -38,7 +38,7 @@ public class OrderKafkaListener {
      * @param orderDTO DTO заказа, полученный из Kafka
      */
     @KafkaHandler
-    public void processOrder(OrderKafkaDTO orderDTO) {
+    public void processOrder(KafkaOrderDTO orderDTO) {
 
         log.info("Получен orderDTO: {}", orderDTO);
 
@@ -52,7 +52,7 @@ public class OrderKafkaListener {
 
             OrderEntity orderEntity = mapper.mapToOrderWithProducts(orderDTO);
             repository.save(orderEntity);
-            log.info("OrderEntity {} сохранен в бд.", orderId);
+            log.info("Заказ с ID {} сохранен в бд.", orderId);
 
 
         } catch (ResourceAccessException e) {

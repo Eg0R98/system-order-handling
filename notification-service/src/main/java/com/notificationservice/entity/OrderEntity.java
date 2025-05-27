@@ -16,7 +16,7 @@ import java.util.UUID;
  * Представляет заказ пользователя, содержит идентификатор пользователя и список товаров.
  */
 @Entity
-@Table(name = "orders")
+@Table(name = "OrderEntity")
 @Getter
 @Setter
 @RequiredArgsConstructor

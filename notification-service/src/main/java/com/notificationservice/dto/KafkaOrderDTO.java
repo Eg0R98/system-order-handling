@@ -10,7 +10,7 @@ import java.util.UUID;
  * Включает информацию о заказе и список товаров в нём.
  */
 @Data
-public class OrderKafkaDTO {
+public class KafkaOrderDTO {
 
     /**
      * Уникальный идентификатор заказа.
