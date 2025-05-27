@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <!-- Создание таблицы заказов -->
+    <changeSet id="1-create-orders-table" author="egor">
+        <createTable tableName="orders">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Создание таблицы товаров -->
+    <changeSet id="2-create-products-table" author="egor">
+        <createTable tableName="products">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR"/>
+            <column name="discounted_price" type="DECIMAL"/>
+            <column name="total_value_with_discount" type="DECIMAL"/>
+            <column name="quantity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sale" type="DECIMAL"/>
+            <column name="order_id" type="UUID"/>
+        </createTable>
+
+        <!-- Добавление внешнего ключа -->
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="order_id"
+                constraintName="fk_products_orders"
+                referencedTableName="orders"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

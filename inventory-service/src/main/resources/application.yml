@@ -1,26 +1,34 @@
+server:
+  port: 8087 # Порт, на котором запускается HTTP-сервер Spring Boot
+
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/inventory_service_db
-    password: root
-    username: root
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/inventory_service_db # URL подключения к базе данных PostgreSQL
+    password: root  # Пароль для подключения к базе
+    username: root  # Имя пользователя для подключения к базе
+    driver-class-name: org.postgresql.Driver  # Драйвер базы данных
+
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.xml   # Путь к корневому changelog-файлу
+    enabled: true # Включение Liquibase при старте приложения
+
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: ALWAYS # Включить ANSI-коды в выводе (цветной лог)
+
   jpa:
     hibernate:
-      ddl-auto: validate
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:etc/sql/schema.sql
-#      data-locations: classpath:etc/sql/data.sql
-server:
-  port: 8087
+      ddl-auto: validate # Hibernate будет проверять соответствие схемы БД сущностям (не изменяет схему)
+
 grpc:
   server:
-    port: 9090
+    port: 9090 # Порт для gRPC-сервера
     security:
-      enabled: false
-    name: inventory-service
+      enabled: false # Отключена безопасность (TLS) для gRPC
+      name: inventory-service # Имя gRPC-сервера
 
+logging:
+  level:
+    liquibase: DEBUG  # Включает отладочное логирование для Liquibase в целом
+    org.springframework.boot.autoconfigure.liquibase: DEBUG  # Логирование автоконфигурации Liquibase от Spring Boot
+    liquibase.executor.jvm.JdbcExecutor: DEBUG  # Подробное логирование SQL-запросов, выполняемых Liquibase

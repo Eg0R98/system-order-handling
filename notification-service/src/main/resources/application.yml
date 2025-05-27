@@ -1,31 +1,43 @@
 server:
-  port: 8086
+  port: 8086  # Порт, на котором запускается Spring Boot-приложение
+
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/notification_service_db
-    password: root
-    username: root
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/notification_service_db  # URL подключения к БД PostgreSQL
+    username: root  # Имя пользователя базы данных
+    password: root  # Пароль пользователя базы данных
+    driver-class-name: org.postgresql.Driver  # JDBC-драйвер PostgreSQL
+
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.xml   # Путь к корневому changelog-файлу
+    enabled: true # Включение Liquibase при старте приложения
+
   kafka:
     consumer:
-      bootstrap-servers: "127.0.0.1:9092"
-      group-id: "order-events"
+      bootstrap-servers: "127.0.0.1:9092"  # Адрес брокера Kafka
+      group-id: "order-events"  # Идентификатор группы Kafka consumer'ов
+
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: ALWAYS  # Всегда включён цветной вывод в консоль (для читаемости логов)
+
   jpa:
     hibernate:
-      ddl-auto: validate
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:etc/sql/schema.sql
-  #      data-locations: classpath:etc/sql/data.sql
+      ddl-auto: validate  # Проверка соответствия схемы БД и сущностей JPA без изменения схемы
+#    show-sql: true       # Вывод в консоль sql-запросов
+#    properties:
+#      hibernate:
+#        format_sql: true
+
 logging:
   level:
     org:
       apache:
-        kafka: INFO
+        kafka: INFO  # Уровень логирования Kafka
       springframework:
-        kafka: INFO
-
+        kafka: INFO  # Уровень логирования Spring Kafka
+    liquibase: DEBUG  # Включает отладочное логирование для Liquibase в целом
+    org.springframework.boot.autoconfigure.liquibase: DEBUG  # Логирование автоконфигурации Liquibase от Spring Boot
+    liquibase.executor.jvm.JdbcExecutor: DEBUG  # Подробное логирование SQL-запросов, выполняемых Liquibase
+#    org.hibernate.SQL: DEBUG  # Подробное логирование запросов, выполняемых Hibernate
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

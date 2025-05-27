@@ -1,8 +1,18 @@
 package com.orderservice.service;
 
-import com.orderservice.dto.OrderDTOFromClient;
+import com.orderservice.dto.OrderClientDTO;
 import inventory.Product.ProductsResponse;
 
+/**
+ * Сервис для взаимодействия с внешним инвентарным сервисом по GRPC.
+ */
 public interface GRPCClientService {
-    ProductsResponse checkAvailability(OrderDTOFromClient orderDTOFromClient);
+
+    /**
+     * Проверяет наличие товаров на складе через gRPC-запрос к inventory-сервису.
+     *
+     * @param orderClientDTO объект заказа, содержащий список товаров и их количество
+     * @return ответ от inventory-сервиса с информацией о доступных и недоступных товарах
+     */
+    ProductsResponse checkAvailability(OrderClientDTO orderClientDTO);
 }

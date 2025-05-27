@@ -1,65 +1,82 @@
 server:
-  port: 8085
+  port: 8085  # Порт, на котором запускается приложение
+
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/order_service_db
-    password: root
-    username: root
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/order_service_db  # URL подключения к БД PostgreSQL
+    username: root  # Имя пользователя для подключения к БД
+    password: root  # Пароль для подключения к БД
+    driver-class-name: org.postgresql.Driver  # Драйвер JDBC для PostgreSQL
+
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.xml   # Путь к корневому changelog-файлу
+    enabled: true # Включение Liquibase при старте приложения
+
   output:
     ansi:
-      enabled: ALWAYS
+      enabled: ALWAYS  # Включение цветного вывода в консоли (для читаемости логов)
+
   jpa:
     hibernate:
-      ddl-auto: validate
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:etc/sql/schema.sql
-#      data-locations: classpath:etc/sql/data.sql
+      ddl-auto: validate  # Проверка схемы БД при запуске
+
+
+
   kafka:
     producer:
-      bootstrap-servers: "127.0.0.1:9092"
+      bootstrap-servers: "127.0.0.1:9092"  # Адрес Kafka-брокера
       properties:
-        #        retry:
-        #          backoff:
-        #            ms: 1000
         delivery:
           timeout:
-            ms: 10000
+            ms: 10000  # Максимальное время доставки сообщения
           linger:
-            ms: 5000
+            ms: 5000  # Задержка перед отправкой (возможность отправить несколько сообщений за раз)
         request:
           timeout:
-            ms: 5000
+            ms: 5000  # Таймаут для запроса отправки
         max:
           in:
             flight:
               requests:
                 per:
-                  connection: 5
-        security.protocol: PLAINTEXT
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: all
-    #      retries: 10
+                  connection: 5  # Максимальное количество сообщений "в полете" (без подтверждения)
+        security.protocol: PLAINTEXT  # Протокол соединения (без шифрования)
+
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Сериализатор для ключей сообщений
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # Сериализатор значений (объекты -> JSON)
+      acks: all  # Требовать подтверждение от всех брокеров (надежная доставка)
+
   logging:
     level:
       org:
         apache:
-          kafka: INFO
+          kafka: INFO  # Уровень логирования Kafka
         springframework:
-          kafka: INFO
+          kafka: INFO  # Уровень логирования Kafka в Spring
+
 token:
   signing:
-    key: PVU+sMExaAa9l8uddkUPpDT+EvcZA/hlasmXRUT9ChM=
+    key: PVU+sMExaAa9l8uddkUPpDT+EvcZA/hlasmXRUT9ChM=  # Ключ для подписи JWT токенов (секрет)
+
 app:
   admin:
-    username: admin
-    email: admin@gmail.com
-    password: admin123
+    username: admin  # Имя администратора, создаваемого при старте
+    email: admin@gmail.com  # Email администратора
+    password: admin123  # Пароль администратора
+
 grpc:
   client:
     inventory-service:
-      address: "localhost:9090"
-      negotiationType: plaintext
+      address: "localhost:9090"  # Адрес gRPC-сервиса инвентаризации
+      negotiationType: plaintext  # Тип шифрования (в данном случае — без шифрования)
+
+logging:
+  level:
+    org:
+      apache:
+        kafka: INFO  # Уровень логирования Kafka
+      springframework:
+        kafka: INFO  # Уровень логирования Spring Kafka
+    liquibase: DEBUG  # Включает отладочное логирование для Liquibase в целом
+    org.springframework.boot.autoconfigure.liquibase: DEBUG  # Логирование автоконфигурации Liquibase от Spring Boot
+    liquibase.executor.jvm.JdbcExecutor: DEBUG  # Подробное логирование SQL-запросов, выполняемых Liquibase

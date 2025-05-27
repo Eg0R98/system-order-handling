@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'com.google.protobuf' version '0.9.4'
+	id 'org.liquibase.gradle' version '2.2.0'
 }
 
 group = 'com.orderservice'
@@ -22,6 +23,14 @@ ext {
 	set('springGrpcVersion', "0.7.0")
 }
 
+sourceSets {
+	main {
+		resources {
+			srcDirs += ['etc/sql']
+		}
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -30,6 +39,8 @@ dependencies {
 	implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
 
 	implementation 'org.springframework.kafka:spring-kafka'
+
+	implementation 'org.liquibase:liquibase-core:4.27.0'
 
 	implementation 'io.swagger.core.v3:swagger-annotations:2.2.29'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.4'
@@ -44,7 +55,6 @@ dependencies {
 
 	implementation 'org.mapstruct:mapstruct:1.6.3'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
-//	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
@@ -79,6 +89,16 @@ protobuf {
 			}
 		}
 	}
+}
+
+liquibase {
+	activities {
+		main {
+			changeLogFile 'etc/sql/db.changelog/db.changelog-master.xml'
+
+		}
+	}
+	runList = 'main'
 }
 
 tasks.named('test') {

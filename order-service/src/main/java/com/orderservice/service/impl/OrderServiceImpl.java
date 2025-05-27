@@ -1,24 +1,31 @@
 package com.orderservice.service.impl;
 
-import com.orderservice.dto.OrderDTOFoKafka;
-import com.orderservice.dto.OrderDTOFromClient;
-import com.orderservice.dto.ProductDTOFoKafka;
+import com.orderservice.dto.OrderClientDTO;
+import com.orderservice.dto.OrderKafkaDTO;
+import com.orderservice.exception.NotRequiredProductException;
 import com.orderservice.mapping.OrderMapper;
 import com.orderservice.service.GRPCClientService;
 import com.orderservice.service.KafkaProducerService;
+import com.orderservice.service.OrderService;
 import com.orderservice.service.UserService;
-import inventory.Product.SuccessfulProductDTOFromInventoryService;
+import inventory.Product.ProductsResponse;
+import inventory.Product.SuccessfulProductInventoryServiceDTO;
+import inventory.Product.UnsuccessfulProductInventoryServiceDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
+/**
+ * Реализация сервиса для обработки заказов.
+ * Проверяет наличие товаров, отправляет данные заказа в Kafka,
+ * взаимодействует с внешними сервисами (gRPC и Kafka).
+ */
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl {
+public class OrderServiceImpl implements OrderService {
 
     private final GRPCClientService grpcClientService;
 
@@ -28,28 +35,43 @@ public class OrderServiceImpl {
 
     private final OrderMapper mapper;
 
-    public ResponseEntity<?> checkProducts(OrderDTOFromClient orderDTOFromClient) {
+    /**
+     * Проверяет наличие товаров на складе, переданных от клиента.
+     * Если часть товаров недоступна, возвращает ошибку 400 с их списком.
+     * Если все товары доступны, отправляет заказ в Kafka и возвращает список заказанных товаров.
+     *
+     * @param orderClientDTO заказ, полученный от клиента
+     * @return HTTP-ответ: 200 OK со списком товаров или 400 BAD REQUEST с отсутствующими товарами
+     */
 
-        var productsResponse = grpcClientService.checkAvailability(orderDTOFromClient);
+    // избежать вопроса
+    @Override
+    public ResponseEntity<OrderKafkaDTO> checkProducts(OrderClientDTO orderClientDTO) {
 
+        // Проверка доступности товаров через gRPC-сервис
+        ProductsResponse productsResponse = grpcClientService.checkAvailability(orderClientDTO);
+
+
+        // Если есть недоступные товары, выбрасываем исключение
         if (!productsResponse.getUnsuccessfulProductsList().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "Некоторые товары отсутствуют", "unavailable", productsResponse.getUnsuccessfulProductsList()));
+            List<UnsuccessfulProductInventoryServiceDTO> unsuccessfulProductsList = productsResponse.getUnsuccessfulProductsList();
+            throw new NotRequiredProductException("Некоторые товары отсутствуют",
+                    unsuccessfulProductsList.stream()
+                            .map(UnsuccessfulProductInventoryServiceDTO::getName)
+                            .collect(Collectors.toList()));
+
         }
 
-        OrderDTOFoKafka orderDTOFoKafka = new OrderDTOFoKafka();
-        orderDTOFoKafka.setUserId(userService.getCurrentUserId());
+        // Создание DTO для отправки в Kafka
+        List<SuccessfulProductInventoryServiceDTO> successfulProductsList = productsResponse.getSuccessfulProductsList();
 
-        List<SuccessfulProductDTOFromInventoryService> successfulProductsList = productsResponse.getSuccessfulProductsList();
+        // Преобразование товаров в формат для Kafka
+        OrderKafkaDTO orderKafkaDTO = mapper.toKafkaOrder(successfulProductsList, userService.getCurrentUserId());
 
-        List<ProductDTOFoKafka> kafkaProductList = mapper.toKafkaProductList(successfulProductsList);
+        // Отправка заказа в Kafka
+        kafkaProducerService.sendOrderToKafka(orderKafkaDTO);
 
-        orderDTOFoKafka.setProducts(kafkaProductList);
-
-        kafkaProducerService.sendOrderToKafka(orderDTOFoKafka);
-
-        return ResponseEntity.ok(kafkaProductList);
+        return ResponseEntity.ok(orderKafkaDTO);
     }
 
 

@@ -1,9 +1,9 @@
 package com.orderservice.service.impl;
 
 import com.orderservice.dto.AuthRequest;
+import com.orderservice.dto.JwtAuthenticationResponse;
 import com.orderservice.dto.RegRequest;
-import com.orderservice.entity.User;
-import com.orderservice.security.JwtAuthenticationResponse;
+import com.orderservice.entity.UserEntity;
 import com.orderservice.security.Role;
 import com.orderservice.service.AuthenticationService;
 import com.orderservice.service.JwtService;
@@ -16,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Реализация {@link AuthenticationService} для регистрации, входа и обновления токенов.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -35,9 +37,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse registration(RegRequest request) {
 
-        var user = User.builder()
+        var user = UserEntity.builder()
                 .username(request.getUsername())
-                .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
@@ -69,6 +70,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new JwtAuthenticationResponse(jwt);
     }
 
+    /**
+     * Обновление JWT-токена.
+     * Проверяет действительность текущего токена и выдает новый.
+     *
+     * @param token текущий токен
+     * @return объект с новым JWT-токеном
+     * @throws RuntimeException если токен недействителен
+     */
     @Override
     public JwtAuthenticationResponse refreshToken(String token) {
         String username = jwtService.extractUserName(token);
