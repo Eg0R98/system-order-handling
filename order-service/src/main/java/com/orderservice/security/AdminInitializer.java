@@ -30,8 +30,7 @@ public class AdminInitializer implements CommandLineRunner {
             UserEntity admin = UserEntity.builder()
                     .username(adminProperties.getUsername())
                     .password(passwordEncoder.encode(adminProperties.getPassword()))
-                    .role(Role.ADMIN)
-                    .build();
+                    .role(Role.ADMIN).build();
 
             userRepository.save(admin);
             log.info("Администратор создан");

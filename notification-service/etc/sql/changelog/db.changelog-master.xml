@@ -6,7 +6,7 @@
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
     <!-- Создание таблицы заказов -->
-    <changeSet id="1-create-order-entities-table" author="egor">
+    <changeSet id="1-create-orders-table" author="egor">
         <createTable tableName="orders">
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
@@ -18,7 +18,7 @@
     </changeSet>
 
     <!-- Создание таблицы товаров -->
-    <changeSet id="2-create-product-entities-table" author="egor">
+    <changeSet id="2-create-products-table" author="egor">
         <createTable tableName="products">
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>

@@ -12,7 +12,7 @@
                         incrementBy="1"/>
     </changeSet>
 
-    <!-- Changeset для создания таблицы users -->
+    <!-- Changeset для создания таблицы UserEntity -->
     <changeSet id="2-create-users-table" author="egor">
         <createTable tableName="users">
             <column name="id" type="BIGINT">

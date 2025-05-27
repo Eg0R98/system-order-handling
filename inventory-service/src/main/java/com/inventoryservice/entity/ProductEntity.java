@@ -12,7 +12,7 @@ import java.util.UUID;
  * Представляет информацию о товаре, включая цену, количество и скидку.
  */
 @Entity
-@Table(name = "ProductEntity")
+@Table(name = "products")
 @Setter
 public class ProductEntity {
 

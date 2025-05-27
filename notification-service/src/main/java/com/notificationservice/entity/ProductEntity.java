@@ -15,7 +15,7 @@ import java.util.UUID;
  * Содержит информацию о товаре, который входит в заказ.
  */
 @Entity
-@Table(name = "ProductEntity")
+@Table(name = "products")
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -36,13 +36,13 @@ public class ProductEntity {
     /**
      * Цена товара с учётом скидки.
      */
-    @Column(name = "discountedPrice")
+    @Column(name = "discounted_price")
     private BigDecimal discountedPrice;
 
     /**
      * Общая стоимость товара с учётом количества и скидки.
      */
-    @Column(name = "totalValueWithDiscount")
+    @Column(name = "total_value_with_discount")
     private BigDecimal totalValueWithDiscount;
 
     /**

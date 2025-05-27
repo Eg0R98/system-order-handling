@@ -7,6 +7,7 @@ import inventory.InventoryServiceGrpc;
 import inventory.Product.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.UUID;
  */
 @GrpcService
 @RequiredArgsConstructor
+@Slf4j
 public class GRPCService extends InventoryServiceGrpc.InventoryServiceImplBase {
 
     private final ProductRepository repository;
@@ -35,6 +37,7 @@ public class GRPCService extends InventoryServiceGrpc.InventoryServiceImplBase {
      */
     @Override
     public void checkAvailability(ProductsRequest request, StreamObserver<ProductsResponse> responseObserver) {
+        log.info("Принят GRPC-запрос с order-service {} ", request.toString());
 
         List<SuccessfulProductInventoryServiceDTO> successfulProducts = new ArrayList<>();
         List<UnsuccessfulProductInventoryServiceDTO> unsuccessfulProducts = new ArrayList<>();
@@ -58,6 +61,7 @@ public class GRPCService extends InventoryServiceGrpc.InventoryServiceImplBase {
         responseObserver.onNext(productsResponse);
         responseObserver.onCompleted();
 
+        log.info("Отправлен GRPC-ответ в order-service {} ", productsResponse);
 
     }
 }
