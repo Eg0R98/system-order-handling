@@ -2,9 +2,7 @@ package com.notificationservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.List;
@@ -19,7 +17,9 @@ import java.util.UUID;
 @Table(name = "orders")
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class OrderEntity {
 
     /**

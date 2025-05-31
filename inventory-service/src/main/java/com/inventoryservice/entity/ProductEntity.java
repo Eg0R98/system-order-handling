@@ -2,6 +2,9 @@ package com.inventoryservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -14,6 +17,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "products")
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductEntity {
 
     /**

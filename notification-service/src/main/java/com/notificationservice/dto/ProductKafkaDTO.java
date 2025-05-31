@@ -1,5 +1,6 @@
 package com.notificationservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.UUID;
  * Содержит основные поля товара, включая скидку и итоговые значения.
  */
 @Data
+@Builder
 public class ProductKafkaDTO {
     /**
      * Уникальный идентификатор товара.

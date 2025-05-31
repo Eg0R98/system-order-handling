@@ -1,5 +1,6 @@
 package com.orderservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.util.UUID;
  * ДТО-товар, который присылает клиент
  */
 @Data
+@Builder
 public class ProductClientDTO{
 
     /*id товара*/

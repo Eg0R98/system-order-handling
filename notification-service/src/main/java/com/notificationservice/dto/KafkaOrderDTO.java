@@ -1,5 +1,6 @@
 package com.notificationservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.UUID;
  * Включает информацию о заказе и список товаров в нём.
  */
 @Data
+@Builder
 public class KafkaOrderDTO {
 
     /**
