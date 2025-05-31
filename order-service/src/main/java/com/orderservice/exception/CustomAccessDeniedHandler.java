@@ -18,7 +18,7 @@ import java.io.IOException;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     /**
-     * Обработка accessDeniedException и отправка ответа клиенту в виде json
+     * Обработка AccessDeniedException и отправка ответа клиенту в виде json
      * @param request HTTP-запрос от клиента. Из него можно получить заголовки, параметры, путь и т.д
      * @param response HTTP-ответ, в который помещается статус, тело, заголовки и т.п
      * @param accessDeniedException - объект класса AccessDeniedException

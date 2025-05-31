@@ -12,6 +12,7 @@ import inventory.Product.ProductsResponse;
 import inventory.Product.SuccessfulProductInventoryServiceDTO;
 import inventory.Product.UnsuccessfulProductInventoryServiceDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final GRPCClientService grpcClientService;
@@ -43,14 +45,13 @@ public class OrderServiceImpl implements OrderService {
      * @param orderClientDTO заказ, полученный от клиента
      * @return HTTP-ответ: 200 OK со списком товаров или 400 BAD REQUEST с отсутствующими товарами
      */
-
-    // избежать вопроса
     @Override
     public ResponseEntity<OrderKafkaDTO> checkProducts(OrderClientDTO orderClientDTO) {
 
         // Проверка доступности товаров через gRPC-сервис
         ProductsResponse productsResponse = grpcClientService.checkAvailability(orderClientDTO);
 
+        log.info("Получен Grpc-ответ {}", productsResponse);
 
         // Если есть недоступные товары, выбрасываем исключение
         if (!productsResponse.getUnsuccessfulProductsList().isEmpty()) {
